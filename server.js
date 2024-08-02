@@ -11,11 +11,8 @@ const PORT = process.env.PORT || 3000; // Use environment variable for PORT
 app.use(cors());
 app.use(bodyParser.json());
 
-// Serve static files from the root directory
+// Serve static files from the 'assets' directory
 app.use(express.static(path.join(__dirname, 'assets')));
-
-// Serve static files from the 'public' directory
-// app.use(express.static(path.join(__dirname, 'public')));
 
 // API endpoint for contact form submission
 app.post('/api/contact', contactFormHandler);
