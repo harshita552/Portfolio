@@ -1,21 +1,28 @@
 const mongoose = require('mongoose');
 const Cors = require('cors');
-const Contact = require('../models/contacts'); // Adjust the path accordingly
+const Contact = require('./models/contacts'); // Adjust the path accordingly
 
 const uri = process.env.MONGODB_URI; // Use environment variable for the MongoDB URI
 const cors = Cors({
     methods: ['GET', 'POST', 'OPTIONS'],
 });
 
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.error('MongoDB connection error:', err));
+// Connect to MongoDB function
+const connectToDatabase = async () => {
+    if (mongoose.connection.readyState === 0) { // 0 = disconnected
+        await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+        console.log('MongoDB connected');
+    }
+};
 
 const handler = async (req, res) => {
     await new Promise((resolve, reject) => cors(req, res, (result) => {
         if (result instanceof Error) return reject(result);
         resolve();
     }));
+
+    // Ensure database connection before processing the request
+    await connectToDatabase();
 
     if (req.method === 'POST') {
         const { name, email, mobile, message } = req.body;
@@ -29,7 +36,7 @@ const handler = async (req, res) => {
             const savedContact = await newContact.save();
             res.status(201).json({ id: savedContact.id });
         } catch (error) {
-            console.error(error);
+            console.error('Error saving contact:', error);
             res.status(500).json({ error: 'Database error occurred.' });
         }
     } else {
