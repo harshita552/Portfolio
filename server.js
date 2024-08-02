@@ -12,7 +12,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Serve static files from the 'assets' directory
-app.use(express.static(path.join(__dirname, 'assets')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 // API endpoint for contact form submission
 app.post('/api/contact', contactFormHandler);
