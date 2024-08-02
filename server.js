@@ -12,7 +12,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Serve static files from the root directory
-app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'assets')));
 
 // Serve static files from the 'public' directory
 // app.use(express.static(path.join(__dirname, 'public')));
