@@ -1,35 +1,41 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors'); // Import CORS
-const contactFormHandler = require('./api/submit_contact'); // Adjust the path if necessary
-const Contact = require('./models/contacts'); // Adjust the path if necessary
+const mongoose = require('mongoose');
+const Cors = require('cors');
+const Contact = require('../models/contacts'); // Adjust the path accordingly
 
-
-const app = express();
-const PORT = 3000;
-
-app.use(cors()); // Enable CORS for all routes
-app.use(bodyParser.json());
-
-// Root route
-app.get('/', (req, res) => {
-    res.send('Welcome to the Contact Form API!');
+const uri = process.env.MONGODB_URI; // Use environment variable for the MongoDB URI
+const cors = Cors({
+    methods: ['GET', 'POST', 'OPTIONS'],
 });
 
-// Route to get all contact data
-app.get('/api/contacts', async (req, res) => {
-    try {
-        const contacts = await Contact.find();
-        res.status(200).json(contacts);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to retrieve contacts.' });
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.error('MongoDB connection error:', err));
+
+const handler = async (req, res) => {
+    await new Promise((resolve, reject) => cors(req, res, (result) => {
+        if (result instanceof Error) return reject(result);
+        resolve();
+    }));
+
+    if (req.method === 'POST') {
+        const { name, email, mobile, message } = req.body;
+
+        if (!name || !email || !mobile || !message) {
+            return res.status(400).json({ error: 'All fields are required.' });
+        }
+
+        try {
+            const newContact = new Contact({ name, email, mobile, message });
+            const savedContact = await newContact.save();
+            res.status(201).json({ id: savedContact.id });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Database error occurred.' });
+        }
+    } else {
+        res.setHeader('Allow', ['POST']);
+        res.status(405).end(`Method ${req.method} Not Allowed`);
     }
-});
+};
 
-// Contact form API route
-app.post('/api/contact', contactFormHandler);
-
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+module.exports = handler;
