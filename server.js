@@ -1,12 +1,13 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors'); // Import CORS
+const cors = require('cors');
 const contactFormHandler = require('./api/submit_contact'); // Adjust the path if necessary
 
 const app = express();
 const PORT = 3000;
 
-app.use(cors()); // Enable CORS for all routes
+app.use(cors());
 app.use(bodyParser.json());
 
 app.post('/api/contact', contactFormHandler);
