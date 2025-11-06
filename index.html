@@ -178,7 +178,7 @@
       <div class="col-md-3">
         <div class="card shadow-sm h-100 d-flex align-items-center justify-content-center">
           <img src="https://picperf.io/https://laravelnews.s3.amazonaws.com/images/tailwindcss-1633184775.jpg"
-            width="50%" height="auto" alt="" />
+            width="70%" height="auto" alt="" />
         </div>
       </div>
     </div>
@@ -186,7 +186,7 @@
     <div class="row mt-4 align-items-stretch">
       <div class="col-md-3">
         <div class="card shadow-sm h-100 d-flex align-items-center justify-content-center">
-          <img src="images/React.png" width="50%" height="auto" alt="" />
+          <img src="images/REACT-wb.png" width="50%" height="auto" alt="" />
         </div>
       </div>
       <!-- <div class="col-md-3">
@@ -263,6 +263,56 @@
           </div>
         </div>
       </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="card project-content h-100">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Expense Tracker</h5>
+            <p class="card-text" id="desc">
+              A responsive React web app that lets users track daily expenses according to their categories that
+              categorize spending, and monitor their budget. All data is stored locally in the browser using
+              localStorage for a fast, client-side experience.
+            </p>
+            <a id="toggleDesc" class="text-danger mb-2" style="cursor: pointer;">Read more</a>
+            <a href="https://daily-expense-log.netlify.app/" class="btn btn-primary mt-auto">View Project</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card project-content h-100">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Strivexx</h5>
+            <p class="card-text">Developed a responsive corporate site using HTML, CSS, and JavaScript with smooth
+              transitions and
+              animations. </p>
+            <a href="https://strivexx.com/" class="btn btn-primary mt-auto">View Project</a>
+          </div>
+        </div>
+      </div>
+        <div class="col-md-4 mb-4">
+        <div class="card project-content h-100">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Pintrest Gallery</h5>
+            <p class="card-text">Created a Pinterest-style responsive image gallery using React, Vite, and Tailwind CSS with <strong>Unsplash API</strong>.</p>
+            <a href="https://pinterest-style-gallery.netlify.app/" class="btn btn-primary mt-auto">View Project</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card project-content h-100">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Wall Vastra - Frame Customization Platform</h5>
+            <p class="card-text wall-desc" id="wallDesc">
+              Developing a frame customization website using React.js for the frontend and Node.js
+              for the backend. Focused on dynamic 3D previews, seamless user interactions, and scalable architecture.
+            </p>
+            <a id="toggleWallDesc" class="text-danger mb-2" style="cursor: pointer;">Read more</a>
+            <a href="#" class="btn btn-primary btn-sm mt-auto">Ongoing Project</a>
+          </div>
+        </div>
+      </div>
+
+
       <!-- <div class="col-md-4 mb-4">
           <div class="card project-content h-100">
             <div class="card-body d-flex flex-column">
@@ -362,6 +412,57 @@
   <script src="https://unpkg.com/scrollreveal"></script>
 
   <script src="/script.js"></script>
+  <script>
+    const desc = document.getElementById('desc');
+    const toggle = document.getElementById('toggleDesc');
+
+    const fullText = desc.textContent.trim();
+    const words = fullText.split(' ');
+    const previewCount = 14;
+    let expanded = false;
+
+    function updateText() {
+      if (!expanded) {
+        desc.textContent = words.slice(0, previewCount).join(' ') + '...';
+        toggle.textContent = 'Read more';
+      } else {
+        desc.textContent = fullText;
+        toggle.textContent = 'Show less';
+      }
+      expanded = !expanded;
+    }
+
+    // Initialize with preview
+    updateText();
+
+    // Toggle on click
+    toggle.addEventListener('click', updateText);
+
+    const wallDesc = document.getElementById('wallDesc');
+    const toggleWall = document.getElementById('toggleWallDesc');
+
+    const wallFullText = wallDesc.textContent.trim();
+    const wallWords = wallFullText.split(' ');
+    const wallPreviewCount = 16;
+    let wallExpanded = false;
+
+    function updateWallText() {
+      if (!wallExpanded) {
+        wallDesc.textContent = wallWords.slice(0, wallPreviewCount).join(' ') + '...';
+        toggleWall.textContent = 'Read more';
+      } else {
+        wallDesc.textContent = wallFullText;
+        toggleWall.textContent = 'Show less';
+      }
+      wallExpanded = !wallExpanded;
+    }
+
+    // Initialize preview
+    updateWallText();
+
+    // Toggle click
+    toggleWall.addEventListener('click', updateWallText);
+  </script>
 </body>
 
 </html>
